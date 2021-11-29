@@ -135,6 +135,10 @@ func (m *serviceMap) get(method string) (*service, *serviceMethod, error) {
 	}
 	m.mutex.Lock()
 	service := m.services[parts[0]]
+	if lp == 3 {
+		serviceName := strings.ToUpper(string(parts[0][0])) + string(parts[0][1:]) + strings.ToUpper(string(parts[1][0])) + string(parts[1][1:])
+		service = m.services[serviceName]
+	}
 	m.mutex.Unlock()
 	if service == nil {
 		err := fmt.Errorf("rpc: can't find service %q", method)
